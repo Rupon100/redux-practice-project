@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { incrementQuantity } from "../Redux/Features/carts/cartSlice";
+import { decrementQuantity, incrementQuantity, removeProduct } from "../Redux/Features/carts/cartSlice";
 
 const Carts = () => {
   const carts = useSelector((state) => state.carts);
@@ -9,12 +9,17 @@ const Carts = () => {
   console.log("ttol price: ", totalPrice);
 
   const handleIncrement = (id) => {
+    console.log(id)
     dispatch(incrementQuantity(id));
   };
 
-  const handleDecrement = () => {};
+  const handleDecrement = (id) => {
+    dispatch(decrementQuantity(id));
+  };
 
-  const handleRemoveItem = () => {};
+  const handleRemoveItem = (id) => {
+    dispatch(removeProduct(id))
+  };
 
   return (
     <div className="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -27,13 +32,13 @@ const Carts = () => {
             <img className="h-22 w-32 object-cover" src={cart.image} alt="" />
             <div>
               <div className="flex items-center justify-center bg-green-600 text-white" >
-                <div className="p-2 btn m-1 bg-black text-white">-</div>
+                <div onClick={() => handleDecrement(cart.id)} className="p-2 btn m-1 bg-black text-white">-</div>
                 <div>{0}</div>
-                <div className="p-2 btn m-1 bg-black text-white">+</div>
+                <div onClick={() => handleIncrement(cart.id)} className="p-2 btn m-1 bg-black text-white">+</div>
               </div>
               <h2 className="font-semibold">{cart.name}</h2>
               <h2 className="font-semibold">${cart.price}</h2>
-              <button className="btn btn-sm">remove</button>
+              <button onClick={() => handleRemoveItem(cart.id)} className="btn btn-sm">remove</button>
             </div>
           </div>
         ))}

@@ -14,7 +14,7 @@ const cartSlice = createSlice({
             }else{
                 state.push({
                     ...action.payload,
-                    id: Date.now(),
+                    id: action.payload.id,
                     quantity: 1,
                     productId: action.payload.id
                 })
@@ -24,17 +24,25 @@ const cartSlice = createSlice({
         // increment product
         incrementQuantity: (state, action) => {
             console.log("increment: ", action.payload);
+            const isExist = state.find((product) => product.id === action.payload);
+            if(isExist){
+                isExist.quantity++;
+            }
         
         },
 
         // decrement cart
         decrementQuantity: (state, action) => {
-
+            console.log("decrement: ", action.payload);
+            const isExist = state.find((product) => product.id === action.payload);
+            if(isExist &&  isExist.quantity > 1){
+                isExist.quantity--;
+            }
         },
 
         // remove from cart
         removeProduct: (state, action) => {
-
+            return state.filter((product) => product.id !== action.payload) 
         }
     }
 })
